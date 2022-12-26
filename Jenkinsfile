@@ -42,9 +42,15 @@ stages {
 	stage("Telegram"){
 		steps{
 		script{
-			withCredentials([string(credentialsId: '5987960029:AAGSJGfCCj-tys8E_L7gipoUfq1UnZ0UrYQ', variable: 'TOKEN'),
-			string(credentialsId: '-769559802', variable: 'CHAT_ID')]) {
+			withCredentials([string(credentialsId: '5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc', variable: 'TOKEN'),
+			string(credentialsId: '-1001804879191', variable: 'CHAT_ID')]) {
 			telegramSend(messsage:"Code was built and was deployed successfully.",chatId:${CHAT_ID})
+			sh '''
+			curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=”HTML” -d text=”<b>Project</b> : POC \
+			<b>Branch</b>: vaibhavraj \
+			<b>Build </b> : OK \
+			<b>Test suite</b> = Passed”
+			'''
 			}
 		}
 		}
