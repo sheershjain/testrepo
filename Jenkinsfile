@@ -1,8 +1,6 @@
 pipeline {
 
-agent {
-	label "harshit_linux"
-}
+agent any
 
 stages {
 	stage('SCM') {
