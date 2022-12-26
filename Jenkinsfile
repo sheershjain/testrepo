@@ -13,7 +13,7 @@ stages {
 	}
 	stage('Build') {
 		steps {
-			sh '''
+			script{ '''
 			if [ $(docker ps | grep nginxt | cut -d " " -f 1) != "" ]
 			then 
 				docker rm -f $(docker ps | grep nginxt | cut -d " " -f 1)
@@ -24,15 +24,17 @@ stages {
 			fi
 			docker build -t nginxt:${BUILD_ID} .
 				'''
+			}
 		}
 	}	
 
 	stage('Deploy') {
 		steps {
-			sh '''
+			script{ '''
 			image=$(docker images nginxt --format "{{.Repository}}:{{.Tag}}")
 			docker run -p 80:80 -d $image
 			'''
+			}
 		}
 	}
 
