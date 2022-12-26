@@ -9,6 +9,7 @@ stages {
 		steps  {
 			echo "git pull my code"
 			git 'https://github.com/sheershjain/testrepo.git'
+			sh 'git checkout vaibhavraj'
 		}
 	}
 	stage('Build') {
