@@ -9,9 +9,8 @@ stages {
 		steps  {
 			echo "git pull my code"
 			sh 'rm -rf ./*'
-			sh 'git clone https://github.com/sheershjain/testrepo.git'
-			sh 'cd testrepo'
-			sh 'git checkout vaibhavraj'
+			git branch: 'vaibhavraj',
+                url: ' https://github.com/sheershjain/testrepo.git'
 		}
 	}
 	stage('Build') {
@@ -26,7 +25,6 @@ stages {
 			then
 					docker rmi -f $(docker images nginxt --format "{{.ID}}");
 			fi
-			cd testrepo
 			docker build -t nginxt:${BUILD_ID} .
 				
 			'''
@@ -36,7 +34,6 @@ stages {
 	stage('Deploy') {
 		steps {
 			sh ''' 
-			cd testrepo
 			image=$(docker images nginxt --format "{{.Repository}}:{{.Tag}}")
 			docker run -p 8000:80 -d $image
 			'''
