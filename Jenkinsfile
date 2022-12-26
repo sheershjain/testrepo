@@ -1,7 +1,7 @@
 pipeline {
 
 agent {
-	lable "harshit_linux"
+	label "harshit_linux"
 }
 
 stages {
@@ -11,7 +11,6 @@ stages {
 			git 'https://github.com/sheershjain/testrepo.git'
 		}
 	}
-
 	stage('Build') {
 		steps {
 			sh """
