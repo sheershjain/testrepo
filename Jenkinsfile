@@ -1,6 +1,8 @@
 pipeline {
 
-agent any
+agent {
+	lable "harshit_linux"
+}
 
 stages {
 	stage('SCM') {
@@ -12,8 +14,8 @@ stages {
 
 	stage('Build') {
 		steps {
-			sh ' 
-				if [ $(docker ps | grep nginxt | cut -d " " -f 1) != " ]
+			sh """
+				if [ $(docker ps | grep nginxt | cut -d " " -f 1) != " ];
 				then
 					docker rm -f $(docker ps | grep nginxt | cut -d " " -f 1)
 				fi
@@ -22,14 +24,16 @@ stages {
 						docker rmi -f $(docker images nginxt --format "{{.ID}}");
 				fi
 				docker build -t nginxt:${BUILD_ID} .
-				'
+				"""
 		}
 	}	
 
 	stage('Deploy') {
 		steps {
-			sh 'image=$(docker images nginxt --format "{{.Repository}}:{{.Tag}}")
-docker run -P -d $image'
+			sh """
+			image=$(docker images nginxt --format "{{.Repository}}:{{.Tag}}")
+			docker run -p 8000:80 -d $image
+			"""
 		}
 	}
 
