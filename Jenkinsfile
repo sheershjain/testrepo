@@ -36,9 +36,7 @@ stages {
 			docker run -p 8000:80 -d $image
 			'''
 		}
-		step{
-			slackSend "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-		}
+
 	}
 
 
