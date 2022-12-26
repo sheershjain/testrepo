@@ -38,10 +38,22 @@ stages {
 			docker run -p 8000:80 -d $image
 			'''
 		}
-
 	}
+	steps ("Telegram"){
+		script{
+			withCredentials([string(credentialsId: '5987960029:AAGSJGfCCj-tys8E_L7gipoUfq1UnZ0UrYQ', variable: 'TOKEN'),
+			string(credentialsId: '-769559802', variable: 'CHAT_ID')]) {
+			telegramSend(messsage:"Code was built and was deployed successfully.",chatId:${CHAT_ID})
+			}
+		}
+}
 
 
+}
+post{
+	success{
+		slackSend color: "good", message: "Message from Jenkins Pipeline"
+	}
 }
 
 }
