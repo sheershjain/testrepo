@@ -43,7 +43,8 @@ pipeline {
 			steps{
 			script{
 				sh '''
-				curl -s -X POST https://api.telegram.org/bot5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text="Testing pipeline,</br> Build completed with Build ID ${BUILD_ID}"
+				curl -s -X POST https://api.telegram.org/bot5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text="Testing pipeline Build completed with Build ID ${BUILD_ID}"
+				
 				'''
 				}
 			}
