@@ -58,6 +58,3 @@ post{
 }
 
 }
-
- curl -s -X POST https://api.telegram.org/bot5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text="Testing Token"
-curl -s -X POST https://api.telegram.org/bot/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text=""
