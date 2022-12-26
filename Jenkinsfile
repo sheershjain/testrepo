@@ -42,13 +42,8 @@ stages {
 	stage("Telegram"){
 		steps{
 		script{
-			withCredentials([string(credentialsId: '5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc', variable: 'TOKEN'),
-			string(credentialsId: '-1001804879191', variable: 'CHAT_ID')]) {
 			sh '''
-			curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=”HTML” -d text=”<b>Project</b> : POC \
-			<b>Branch</b>: vaibhavraj \
-			<b>Build </b> : OK \
-			<b>Test suite</b> = Passed”
+			curl -s -X POST https://api.telegram.org/bot5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc/sendMessage -d chat_id=-1001804879191 -d parse_mode=”HTML” -d text=”Testing pipeline,</br> Build completed with Build ID ${BUILD_ID}"
 			'''
 			}
 		}
@@ -64,3 +59,6 @@ post{
 }
 
 }
+
+ curl -s -X POST https://api.telegram.org/bot5988052752:AAEsBVdnpFaainVkCE_ns5IQOGdsvy9tKTc/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text="Testing Token"
+curl -s -X POST https://api.telegram.org/bot/sendMessage -d chat_id=-1001804879191 -d parse_mode="HTML" -d text=""
