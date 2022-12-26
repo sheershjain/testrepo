@@ -8,7 +8,9 @@ stages {
 	stage('SCM') {
 		steps  {
 			echo "git pull my code"
+			
 			sh 'git clone https://github.com/sheershjain/testrepo.git'
+			sh 'cd testrepo'
 			sh 'git checkout vaibhavraj'
 		}
 	}
