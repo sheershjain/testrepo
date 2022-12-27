@@ -30,6 +30,7 @@ pipeline {
 					
 				'''
 				slackSend message: "Build Completed, Image name -> nginxt:${BUILD_ID}"
+				mail bcc: '', body: 'Build is complete and running fine', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Build successful', to: 'divyanshi@gkmit.co'
 			}
 		}	
 
@@ -41,6 +42,8 @@ pipeline {
 				docker run -p 8000:80 -d $image
 				'''
 				slackSend message: "Container Started of image nginxt:${BUILD_ID} running on http://3.94.62.59:8000/"
+				mail bcc: '', body: 'Deploy is complete and running fine', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Deploy successful', to: 'divyanshi@gkmit.co'
+
 			}
 		}
 		stage("Telegram"){
