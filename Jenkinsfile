@@ -9,7 +9,7 @@ pipeline {
 			steps  {
 				echo "git pull my code"
 				sh 'rm -rf ./*'
-				git branch: 'vaibhavraj',
+				git branch: 'sheersh',
 					url: ' https://github.com/sheershjain/testrepo.git'
 			}
 		}
@@ -59,7 +59,7 @@ pipeline {
 			slackSend message: "Complete Build is ready"
 		}
 		failure{
-			sendMessage message:"Kuch tho fta hai"
+			slackSend message:"Kuch tho fta hai"
 		}
 	}
 }
