@@ -41,6 +41,7 @@ pipeline {
 				docker run -p 8000:80 -d $image
 				'''
 				slackSend message: "Container Started of image nginxt:${BUILD_ID} running on http://3.94.62.59:8000/"
+				mail bcc: "", body: "Build is ready, build id -> ${BUILD_ID}", cc: "", from: "", replyTo: "", subject: "Docker build", to: "vaibhavraj@gkmit.co"
 			}
 		}
 		stage("Telegram"){
