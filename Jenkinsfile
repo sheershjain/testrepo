@@ -15,13 +15,13 @@ pipeline {
         }
         stage('Created Artifact & Build Image') {
             steps {
-                slackSend message: "Build Started ${params.tag}"
+                slackSend message: "Build Started ${tag}"
                 sh '''
-				docker build -t sheersh/frontend:${BUILD_TAG} .
+				docker build -t sheersh/frontend:${tag} .
 				'''
-                slackSend message: "Build Completed, Image name -> sheersh/frontend:${params.tag}"
-				mail bcc: '', body: 'Build is completed. Image name -> sheersh/frontend:${params.tag}', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Build successful', to: 'divyanshi@gkmit.co'
-                sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="Build Successfull. Image name -> sheersh/frontend:${params.tag}"'
+                slackSend message: "Build Completed, Image name -> sheersh/frontend:${tag}"
+				mail bcc: '', body: 'Build is completed. Image name -> sheersh/frontend:${tag}', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Build successful', to: 'divyanshi@gkmit.co'
+                sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="Build Successfull. Image name -> sheersh/frontend:${tag}"'
             }
         }
         stage('Push image to dockerhub') {
@@ -29,8 +29,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'f6dbd8af-8a0f-40ee-932d-181fd4e16047', variable: 'DOCKER_HUB_PASS')]) {
                     sh "docker login -u sheersh -p $DOCKER_HUB_PASS"
                 }
-                slackSend message: "Pushed image -> sheersh/frontend:${params.tag}"
-				sh "docker push sheersh/frontend:${BUILD_TAG}"
+                slackSend message: "Pushed image -> sheersh/frontend:${tag}"
+				sh "docker push sheersh/frontend:${tag}"
                 mail bcc: '', body: 'New Build image is pushed to Docker HUb', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Image pushed successful', to: 'divyanshi@gkmit.co'
                 sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="Image pushed to Docker HUB"'
             }
@@ -38,7 +38,7 @@ pipeline {
         stage('Deploy webapp in DEV environment') {
             steps {
                 sh "docker rm -f bitssa"
-                sh "docker run -d --name bitssa -p 80:80 sheersh/frontend:${BUILD_TAG}"
+                sh "docker run -d --name bitssa -p 80:80 sheersh/frontend:${tag}"
                 slackSend message: "WEB APP deployed in Dev Environment Successfully at http://3.110.190.43/"
                 mail bcc: '', body: 'WEB APP deployed in Dev Environment Successfully at http://3.110.190.43/', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Deploy in DEV', to: 'divyanshi@gkmit.co'
                 sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="WEB APP deployed in Dev Environment Successfully at http://3.110.190.43/"'
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 sshagent(['3712932e-ae92-49dd-aa94-4474e2becbee']) {
                     sh "ssh -o StrictHostKeyChecking=no ec2-user@65.2.177.242 sudo docker rm -f bitssa"
-                    sh "ssh ec2-user@65.2.177.242 sudo docker run -d --name bitssa -p 80:80 sheersh/frontend:${BUILD_TAG}"
+                    sh "ssh ec2-user@65.2.177.242 sudo docker run -d --name bitssa -p 80:80 sheersh/frontend:${tag}"
                     slackSend message: "WEB APP deployed in QA Environment for testing Successfully at http://65.2.177.242/"
                     mail bcc: '', body: 'WEB APP deployed in QA Environment for testing Successfully at http://65.2.177.242/', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Deploy in DEV', to: 'divyanshi@gkmit.co'
                     sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="WEB APP deployed in QA Environment for testing Successfully at http://65.2.177.242/"'
@@ -95,7 +95,7 @@ pipeline {
             steps {
                 sshagent(['3712932e-ae92-49dd-aa94-4474e2becbee']) {
                     sh "ssh -o StrictHostKeyChecking=no ec2-user@13.126.126.53 sudo docker rm -f bitssa"
-                    sh "ssh ec2-user@13.126.126.53 sudo docker run -d --name bitssa -p 80:80 sheersh/frontend:${BUILD_TAG}"
+                    sh "ssh ec2-user@13.126.126.53 sudo docker run -d --name bitssa -p 80:80 sheersh/frontend:${tag}"
                     slackSend message: "Deployment in Production Environment is Successfull at http://13.126.126.53/"
                     mail bcc: '', body: 'Deployment in Production Environment is Successfull at http://13.126.126.53/', cc: 'harshit@gkmit.co', from: '', replyTo: '', subject: 'Production Deploy', to: 'divyanshi@gkmit.co'
                     sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="Deployment in Production Environment is Successfull at http://13.126.126.53/"'
