@@ -22,7 +22,7 @@ pipeline {
                 sh 'curl -s -X POST https://api.telegram.org/bot5957608414:AAFRgQCY6rjbOUdsfiNgtQ03-euDDgBevQk/sendMessage -d chat_id=-1001461072821 -d parse_mode="HTML" -d text="Build Successfull"'
             }
         }
-        stage('Push image to dockerhub') 
+        stage('Push image to dockerhub') {
             steps {
                 withCredentials([string(credentialsId: 'f6dbd8af-8a0f-40ee-932d-181fd4e16047', variable: 'DOCKER_HUB_PASS')]) {
                     sh "docker login -u sheersh -p $DOCKER_HUB_PASS"
